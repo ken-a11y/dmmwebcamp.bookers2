@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: :follower_id
   has_many :followers, through: :reverse_of_relationships, source: :following
   
+  validates :name, uniqueness: true, length: {minimum: 2, maximum: 20}
+  validates :introduction, length: {maximum: 50}
+  
   def get_profile_image(width, height)
     unless profile_image.attached?
       file_path = Rails.root.join('app/assets/images/sample-image.jpeg')
@@ -39,9 +42,5 @@ class User < ApplicationRecord
     end
   end
   
-  validates :name, uniqueness: true
-  validates :name, length: {minimum: 2} 
-  validates :name, length: {maximum: 20}
-  validates :introduction, length: {maximum: 50}
   
 end
