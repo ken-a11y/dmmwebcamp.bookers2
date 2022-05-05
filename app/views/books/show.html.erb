@@ -19,6 +19,11 @@
           </td>
           <td><%= link_to @book.title, @book %></td>
           <td><%= @book.body %></td>
+          <td>
+            <% @book.tags.each do |tag| %>
+              <li style="list-style: none;"><%= link_to tag.name, search_path(word: tag.name, range:"Tag", search: "perfect_match") %></li>
+            <% end %>
+          </td>
           <td class=<%= "favorites-btn-" + @book.id.to_s %> >
             <%= render "favorites/btn", book: @book %>
           </td>
