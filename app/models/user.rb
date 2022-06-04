@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :followings, through: :relationships, source: :follower 
   has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: :follower_id
   has_many :followers, through: :reverse_of_relationships, source: :following
+  has_many :group_users, dependent: :destroy
   
   validates :name, uniqueness: true, length: {minimum: 2, maximum: 20}
   validates :introduction, length: {maximum: 50}
@@ -42,5 +43,11 @@ class User < ApplicationRecord
     end
   end
   
+  def self.guest
+    find_or_create_by!(name: 'guestuser' ,email: 'guest@example.com') do |user|
+      user.password = SecureRandom.urlsafe_base64
+
+    end
+  end
   
 end
