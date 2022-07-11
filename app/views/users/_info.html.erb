@@ -23,11 +23,7 @@
 </table>
 
 <div class="row">
-  <% if user.name != "guestuser" %>
-    <%= link_to edit_user_path(user.id), class: "btn btn-outline-secondary btn-block edit_user_#{user.id}" do %>
-      <i class="fas fa-user-cog"></i>
-    <% end %> 
-  <% else %>
+  <% if current_user != user%>
     <% if user.is_followed_by?(current_user) %>
       <%= link_to user_relationships_path(user), method: :delete do %>
         <button class="btn btn-info">フォロー外す</button>
@@ -37,5 +33,14 @@
         <button class="btn btn-success">フォローする</button>
       <% end %>
     <% end %>
+    <% if current_user != user && current_user.is_followed_by?(user) && user.is_followed_by?(current_user) %>
+      <%= link_to 'chatを始める', chat_path(user.id), class: "ml-3" %>
+    <% end %>
+  <% else %>
+    <% if user.name != "guestuser" %>
+      <%= link_to edit_user_path(user.id), class: "btn btn-outline-secondary btn-block edit_user_#{user.id}" do %>
+        <i class="fas fa-user-cog"></i>
+      <% end %> 
+   <% end %>
   <% end %>
 </div>
